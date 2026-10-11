@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Allow microphone · Maya</title>
+  </head>
+  <body>
+    <main class="popup mic-page">
+      <header class="header">
+        <img src="icon-192.png" alt="" class="avatar" />
+        <div>
+          <h1>Let Maya hear you</h1>
+          <p class="subtitle">Chrome will ask for microphone access once.</p>
+        </div>
+      </header>
+      <p id="status">Waiting for permission…</p>
+      <button id="allow" type="button" class="primary">Ask again</button>
+    </main>
+    <script type="module" src="/src/mic.ts"></script>
+  </body>
+</html>
