@@ -63,60 +63,67 @@
 		BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-/* Force the dark theme regardless of OS color scheme. `@media all` always
-   matches, so these :root values always override the light defaults above. */
+/* NimbleBuddy light theme with the coolors.co palette
+   (ff595e · ffca3a · 8ac926 · 1982c4 · 6a4c93). `@media all` always matches,
+   so these values always apply regardless of the OS color scheme. */
 @media all {
 	:root {
-		color-scheme: dark;
+		color-scheme: light;
 
-		--background: 220 14% 5%;
-		--surface: 220 12% 9%;
-		--surface-elevated: 220 10% 13%;
+		--c-red: #ff595e;
+		--c-yellow: #ffca3a;
+		--c-green: #8ac926;
+		--c-blue: #1982c4;
+		--c-violet: #6a4c93;
 
-		--card: 220 12% 9%;
-		--card-foreground: 220 15% 95%;
-		--popover: 220 10% 13%;
-		--popover-foreground: 220 15% 95%;
-		--muted: 220 12% 9%;
+		--background: 0 0% 100%;
+		--surface: 225 33% 98%;
+		--surface-elevated: 225 25% 96%;
 
-		--border: 220 10% 18%;
-		--input: 220 10% 18%;
+		--card: 0 0% 100%;
+		--card-foreground: 230 21% 10%;
+		--popover: 0 0% 100%;
+		--popover-foreground: 230 21% 10%;
+		--muted: 225 33% 97%;
 
-		--foreground: 220 15% 95%;
-		--muted-foreground: 220 10% 50%;
+		--border: 228 22% 92%;
+		--input: 228 22% 88%;
 
-		--primary: 194 100% 50%;
-		--primary-foreground: 220 14% 5%;
+		--foreground: 230 21% 10%;
+		--muted-foreground: 226 11% 40%;
 
-		--secondary: 220 10% 13%;
-		--secondary-foreground: 220 15% 95%;
+		--primary: 203 77% 43%;
+		--primary-foreground: 0 0% 100%;
 
-		--accent: 194 100% 50%;
-		--accent-foreground: 220 14% 5%;
+		--secondary: 225 33% 97%;
+		--secondary-foreground: 230 21% 10%;
 
-		--destructive: 0 72% 58%;
+		--accent: 265 32% 44%;
+		--accent-foreground: 0 0% 100%;
+
+		--destructive: 358 100% 67%;
 		--destructive-foreground: 0 0% 100%;
 
-		--ring: 194 100% 50%;
+		--ring: 203 77% 43%;
 
-		--chart-1: 194 100% 50%;
-		--chart-2: 220 10% 60%;
-		--chart-3: 220 10% 40%;
-		--chart-4: 0 72% 58%;
-		--chart-5: 150 60% 45%;
+		--chart-1: 203 77% 43%;
+		--chart-2: 358 100% 67%;
+		--chart-3: 44 100% 61%;
+		--chart-4: 83 68% 47%;
+		--chart-5: 265 32% 44%;
 
-		--sidebar-background: 220 12% 9%;
-		--sidebar-foreground: 220 15% 95%;
-		--sidebar-primary: 194 100% 50%;
-		--sidebar-primary-foreground: 220 14% 5%;
-		--sidebar-accent: 220 10% 13%;
-		--sidebar-accent-foreground: 220 15% 95%;
-		--sidebar-border: 220 10% 18%;
-		--sidebar-ring: 194 100% 50%;
+		--sidebar-background: 0 0% 100%;
+		--sidebar-foreground: 230 21% 10%;
+		--sidebar-primary: 203 77% 43%;
+		--sidebar-primary-foreground: 0 0% 100%;
+		--sidebar-accent: 225 33% 97%;
+		--sidebar-accent-foreground: 230 21% 10%;
+		--sidebar-border: 228 22% 92%;
+		--sidebar-ring: 203 77% 43%;
 
-		--viz-stop-1: 194 100% 58%;
-		--viz-stop-2: 215 42% 72%;
-		--viz-stop-3: 272 62% 72%;
+		--viz-stop-1: 203 77% 50%;
+		--viz-stop-2: 358 100% 70%;
+		--viz-stop-3: 265 40% 52%;
 	}
 }
 
@@ -181,4 +188,70 @@ body {
 		max-width: 3.5rem;
 		max-height: 3.5rem;
 	}
+}
+
+/* Hover-colour headline letters (palette cycles red → yellow → green → blue → violet). */
+.hover-letters .hl-word {
+	display: inline-block;
+	white-space: nowrap;
+}
+
+.hover-letters .hl {
+	display: inline-block;
+	cursor: default;
+	transition: color 0.18s ease, transform 0.18s ease;
+}
+
+.hover-letters .hl:hover {
+	transform: translateY(-5px) rotate(-4deg);
+}
+
+.hover-letters .hl-0:hover { color: var(--c-red); }
+.hover-letters .hl-1:hover { color: var(--c-yellow); }
+.hover-letters .hl-2:hover { color: var(--c-green); }
+.hover-letters .hl-3:hover { color: var(--c-blue); }
+.hover-letters .hl-4:hover { color: var(--c-violet); }
+
+.palette-gradient-text {
+	background: linear-gradient(100deg, var(--c-red), var(--c-yellow) 30%, var(--c-green) 50%, var(--c-blue) 72%, var(--c-violet));
+	-webkit-background-clip: text;
+	background-clip: text;
+	color: transparent;
+}
+
+/* Floating colour bars behind the start card. */
+.palette-bars {
+	position: absolute;
+	inset: 0;
+	overflow: hidden;
+	pointer-events: none;
+}
+
+.palette-bars i {
+	position: absolute;
+	width: 12px;
+	border-radius: 8px;
+	opacity: 0.85;
+	animation: palette-drift 9s ease-in-out infinite;
+}
+
+.palette-bars i:nth-child(1) { left: 8%; top: 10%; height: 170px; background: var(--c-yellow); rotate: -8deg; }
+.palette-bars i:nth-child(2) { left: 16%; top: 30%; height: 120px; background: var(--c-red); rotate: -4deg; animation-delay: -2s; }
+.palette-bars i:nth-child(3) { left: 6%; top: 64%; height: 150px; background: var(--c-green); rotate: -12deg; animation-delay: -4s; }
+.palette-bars i:nth-child(4) { right: 10%; top: 8%; height: 200px; background: var(--c-blue); rotate: 6deg; animation-delay: -1s; }
+.palette-bars i:nth-child(5) { right: 20%; top: 2%; height: 110px; background: var(--c-red); opacity: 0.5; rotate: -3deg; animation-delay: -3s; }
+.palette-bars i:nth-child(6) { right: 7%; top: 62%; height: 130px; background: var(--c-violet); rotate: 10deg; animation-delay: -5s; }
+.palette-bars i:nth-child(7) { right: 24%; top: 78%; height: 90px; background: var(--c-yellow); rotate: -16deg; animation-delay: -6s; }
+
+@keyframes palette-drift {
+	50% { translate: 0 -18px; }
+}
+
+@media (max-width: 640px) {
+	.palette-bars i { width: 8px; opacity: 0.5; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.palette-bars i,
+	.hover-letters .hl { animation: none; transition: none; }
 }

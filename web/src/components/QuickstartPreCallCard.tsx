@@ -2,6 +2,7 @@
 
 import { Loader2 } from "lucide-react";
 
+import { HoverLetters } from "@/components/HoverLetters";
 import { Button } from "@/components/ui/button";
 
 type QuickstartPreCallCardProps = {
@@ -21,14 +22,10 @@ export function QuickstartPreCallCard({
 }: QuickstartPreCallCardProps) {
 	return (
 		<div
-			className="mx-auto flex w-[min(92vw,26.25rem)] animate-fade-up flex-col items-center rounded-[20px] border border-[#2b2b2b] px-10 py-10 text-center shadow-[0_10px_24px_rgba(0,0,0,0.28)]"
-			style={{
-				backgroundImage:
-					"linear-gradient(164.988deg, rgba(54,54,54,0.2) 1.0596%, rgba(0,0,0,0) 96.089%), linear-gradient(90deg, rgb(16,16,16) 0%, rgb(16,16,16) 100%)",
-			}}
+			className="relative mx-auto flex w-[min(92vw,28rem)] animate-fade-up flex-col items-center rounded-[22px] border border-border bg-card px-10 py-10 text-center shadow-[0_24px_60px_rgba(20,22,31,0.10)]"
 		>
-			<h1 className="text-[28px] font-medium leading-[1.2] text-white">
-				Meet Maya
+			<h1 className="text-[44px] font-bold italic leading-[1.05] tracking-[-0.035em] text-foreground">
+				<HoverLetters text="Meet" /> <span className="palette-gradient-text">Maya</span>
 			</h1>
 			<p className="mt-[14px] text-sm font-medium leading-6 text-muted-foreground">
 				Maya remembers what you tell her. Share your name so your next call picks up
@@ -49,14 +46,14 @@ export function QuickstartPreCallCard({
 					onChange={(e) => onUserKeyChange(e.target.value)}
 					placeholder="e.g. Alex"
 					disabled={isLoading}
-					className="w-full rounded-lg border border-[#2b2b2b] bg-[#111] px-3 py-2 text-sm text-white placeholder-muted-foreground/50 outline-none focus:border-primary focus:ring-1 focus:ring-primary disabled:opacity-50"
+					className="w-full rounded-lg border border-input bg-muted px-3 py-2.5 text-sm text-foreground placeholder-muted-foreground/60 outline-none focus:border-primary focus:ring-1 focus:ring-primary disabled:opacity-50"
 				/>
 			</div>
 
 			<Button
 				onClick={onStartConversation}
 				disabled={isLoading}
-				className="mt-6 h-10 w-full rounded-lg border border-primary bg-primary text-sm font-medium text-black hover:border-white hover:bg-white hover:text-black disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-black"
+				className="mt-6 h-11 w-full rounded-xl border border-primary bg-primary text-sm font-semibold text-white shadow-[0_10px_24px_rgba(25,130,196,0.28)] transition-all hover:-translate-y-0.5 hover:border-accent hover:bg-accent hover:text-white disabled:hover:translate-y-0 disabled:hover:border-primary disabled:hover:bg-primary"
 				aria-label={
 					isLoading
 						? "Starting conversation with Maya"

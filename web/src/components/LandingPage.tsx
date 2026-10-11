@@ -85,7 +85,7 @@ const AgoraProvider = dynamic(
                   }
                   setAutoplayBlocked(false)
                 }}
-                className="fixed inset-x-0 bottom-6 z-50 mx-auto w-fit rounded-full border border-primary bg-primary px-5 py-2.5 text-sm font-medium text-black shadow-lg hover:bg-white"
+                className="fixed inset-x-0 bottom-6 z-50 mx-auto w-fit rounded-full border border-primary bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:border-accent hover:bg-accent"
               >
                 Tap to hear Maya
               </button>
@@ -204,6 +204,17 @@ export default function LandingPage() {
 
   return (
     <div className="relative flex h-dvh min-h-screen flex-col overflow-hidden bg-background text-foreground">
+      {!showConversation ? (
+        <div className="palette-bars" aria-hidden="true">
+          <i />
+          <i />
+          <i />
+          <i />
+          <i />
+          <i />
+          <i />
+        </div>
+      ) : null}
       <div
         className={`flex min-h-0 flex-1 flex-col ${
           showConversation ? 'items-stretch justify-start' : 'items-center justify-center'

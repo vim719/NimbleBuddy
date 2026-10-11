@@ -157,8 +157,11 @@ class MayaSession {
   }
 
   async toggleMute() {
-    if (!this.mic) return
-    const muted = !this.snapshot.muted
+    await this.setMuted(!this.snapshot.muted)
+  }
+
+  async setMuted(muted: boolean) {
+    if (!this.mic || this.snapshot.muted === muted) return
     await this.mic.setEnabled(!muted)
     this.update({ muted })
   }

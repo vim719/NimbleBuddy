@@ -47,6 +47,19 @@ export function App() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight })
   }, [snapshot?.transcript])
 
+  // Push-to-talk keys: "A" starts listening, "X" stops all input until "A".
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return
+      if ((event.target as HTMLElement | null)?.closest('input, textarea')) return
+      const key = event.key.toLowerCase()
+      if (key === 'a') void session.setMuted(false)
+      if (key === 'x') void session.setMuted(true)
+    }
+    window.addEventListener('keydown', onKeyDown)
+    return () => window.removeEventListener('keydown', onKeyDown)
+  }, [])
+
   if (!snapshot) return null
   const inCall = snapshot.status === 'live' || snapshot.status === 'starting' || snapshot.status === 'ending'
 
@@ -111,6 +124,10 @@ export function App() {
               Tap to hear Maya
             </button>
           ) : null}
+          <p className="hint">
+            <b className={snapshot.muted ? 'off' : 'on'}>{snapshot.muted ? 'Mic off' : 'Listening'}</b>
+            <kbd>A</kbd> talk · <kbd>X</kbd> stop listening
+          </p>
           <div className="controls">
             <button type="button" className="secondary" onClick={() => void session.toggleMute()}>
               {snapshot.muted ? 'Unmute' : 'Mute'}
