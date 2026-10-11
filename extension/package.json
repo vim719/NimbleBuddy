@@ -2,7 +2,7 @@
   "name": "maya-chrome-extension",
   "version": "0.1.0",
   "private": true,
-  "description": "Chrome toolbar popup for talking to Maya, adapted from the Agora Chrome Plugin recipe.",
+  "description": "Chrome toolbar popup for talking to Maya.",
   "type": "module",
   "scripts": {
     "build": "vite build",

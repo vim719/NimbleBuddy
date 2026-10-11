@@ -128,7 +128,7 @@ export function App() {
       )}
 
       <footer className="footer">
-        Keep this popup open while you talk. <span>Powered by Nimble</span>
+        Keep this popup open while you talk. <span>Powered by Nimbleway</span>
       </footer>
     </main>
   )

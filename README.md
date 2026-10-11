@@ -2,195 +2,102 @@
 
 **🌐 Showcase: [vim719.github.io/NimbleBuddy](https://vim719.github.io/NimbleBuddy/)**
 
-Maya is a real-time voice AI companion that remembers you across calls and
-searches the live web with Nimble. Talk to her in the browser or from a Chrome
-toolbar popup (`extension/`). Built on the Agora Conversational AI
-cross-session memory recipe below.
+Maya is a real-time voice AI companion. Talk to her out loud — she answers in
+under a second, remembers you across calls, and looks things up on the live web
+with **Nimbleway**. Use her in the browser or from a Chrome toolbar popup.
 
 ![Maya call screen](docs/assets/web-call.jpg)
 
----
+## Features
 
-## Agora Conversational AI — Memory Recipe (Python)
+- **Real-time voice** — speak naturally and interrupt any time.
+- **Cross-session memory** — enter your name and Maya picks up where your last call left off.
+- **Live web search** — Maya calls Nimbleway's `nimble_search` tool over MCP for news, weather and anything recent.
+- **Chrome extension** — talk to Maya from the toolbar (`extension/`).
+- **Wholesome persona** — warm and playful, declines explicit requests, points to real help on self-harm.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
-[![Python](https://img.shields.io/badge/python-%3E%3D3.10-blue)](https://www.python.org/)
-[![Bun](https://img.shields.io/badge/bun-latest-black)](https://bun.sh/)
+## Built with
 
-The **cross-session memory** recipe in the Agora Conversational AI recipes family.
-A returning user (identified by a name handle entered before the call) is remembered
-across sessions — the agent re-injects their conversation history via `system_messages`
-so it can greet them naturally and recall what was said before. Fully **zero-key** —
-OpenAI is Agora-managed (no `OPENAI_API_KEY` required unless you bring your own account).
+| | |
+|---|---|
+| **Nimbleway** | Live web search inside the product (MCP server) |
+| **Claude** | Design, coding, debugging and shipping |
+| **Gemini** | Used during development |
+| **Antigravity** | Development environment |
 
-**Pipeline:** `DeepgramSTT(nova-3, en)` → `OpenAI` (warm assistant + memory context) → `MiniMaxTTS`
+Voice pipeline: Deepgram nova-3 (speech-to-text) → OpenAI `gpt-4o-mini` (with
+memory context and Nimbleway search) → MiniMax (text-to-speech), streamed over a
+real-time RTC/RTM channel.
 
-**Persona:** this copy is customised as **Maya**, a warm, playful companion with
-wholesome boundaries (declines explicit requests, points to real help on self-harm).
-Edit `BASE_SYSTEM` in `server/src/agent.py` to change her personality, and
-`AGENT_GREETING` in `server/.env.local` to change her opening line.
+## Run it
 
-## Prerequisites
-
-- [Python 3.10+](https://www.python.org/)
-- [Bun](https://bun.sh/)
-- [Agora CLI](https://github.com/AgoraIO/cli) — makes generating an App ID + App Certificate easy
-
-The same commands work on macOS, Linux, and Windows. On macOS/Linux, setup uses
-`python3`; on Windows, it uses the Python launcher (`py`) or `python`. WSL and
-virtualenv activation are not required.
-
-## Run It
+**Prerequisites:** [Bun](https://bun.sh/), Python 3.10+, real-time voice
+credentials (App ID + App Certificate), and a
+[Nimbleway API key](https://online.nimbleway.com/settings/api-keys) for web search.
 
 ```bash
-# 1. Install web deps + create the Python venv
-bun run setup
+git clone https://github.com/vim719/NimbleBuddy
+cd NimbleBuddy
+bun run setup          # installs web deps and the Python venv, creates server/.env.local
+```
 
-# 2. Add Agora credentials (CLI), or edit server/.env.local by hand
-agora login
-agora project use <your-project>          # select which project to use
-agora project env write server/.env.local # writes App ID + Certificate
+Edit `server/.env.local`:
 
-# 3. Run backend + web
+```env
+AGORA_APP_ID=your-app-id
+AGORA_APP_CERTIFICATE=your-app-certificate
+NIMBLE_API_KEY=your-nimbleway-key
+```
+
+Then start everything and open **http://localhost:3000**:
+
+```bash
 bun run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000), enter your name (optional),
-then click **Start Conversation**. On a second call with the same name the agent
-will greet you using what you told it before.
+End calls with **End Conversation** so Maya saves what you talked about.
 
-### Working from a clone
+### Chrome extension
 
-If you cloned this repo (rather than scaffolding via the Agora CLI), the steps
-above are complete as written: `bun run setup` creates the Python venv and
-installs web dependencies, then `bun run dev` brings up both services. You
-still need Agora credentials in `server/.env.local` before a conversation can connect.
+With `bun run dev` running:
 
-Services:
+```bash
+cd extension
+bun install && bun run build
+```
 
-- Frontend — http://localhost:3000
-- Backend — http://localhost:8000
-- Mock LLM — N/A (managed OpenAI, no local service)
-- API docs — http://localhost:8000/docs
+Open `chrome://extensions` → **Developer mode** → **Load unpacked** → select
+`extension/dist`. Or grab the prebuilt zip from the
+[showcase page](https://vim719.github.io/NimbleBuddy/). See
+[extension/README.md](extension/README.md).
 
-## Deploy
+## Environment variables (`server/.env.local`)
 
-Deploy `web` (Next.js) and `server` (a reachable FastAPI backend). Set
-`AGENT_BACKEND_URL` in the web deployment so the Next rewrites reach the backend.
+| Variable | Default | Notes |
+|---|---|---|
+| `AGORA_APP_ID` | — | Required. Real-time voice App ID. |
+| `AGORA_APP_CERTIFICATE` | — | Required. Stays on the server; never sent to the browser. |
+| `NIMBLE_API_KEY` | — | Enables Nimbleway web search. Unset = search off. |
+| `OPENAI_MODEL` | `gpt-4o-mini` | LLM model. |
+| `AGENT_GREETING` | built-in | Maya's opening line. |
+| `MEMORY_DB_PATH` | `memory.db` | SQLite file for per-user memory. |
+| `MEMORY_MAX_TURNS` | `20` | Turns remembered per user. |
 
-The SQLite memory file (`memory.db`) is local to wherever the server process runs.
-For multi-instance deployments, point `MEMORY_DB_PATH` at a shared volume.
+## Repo map
 
-A backend-only Docker image is published to
-`ghcr.io/AgoraIO-Conversational-AI/recipe-agent-memory` on `v*` tags.
-It exposes **BACKEND-ONLY** (:8000). No separate LLM container is needed —
-OpenAI is Agora-managed.
-
-## Environment variables
-
-Backend env file: [`server/.env.example`](server/.env.example).
-
-| Variable | Required | Default | Notes |
-| --- | :---: | :---: | --- |
-| `AGORA_APP_ID` | ✅ | — | Agora Console → Project → App ID |
-| `AGORA_APP_CERTIFICATE` | ✅ | — | Agora Console → Project → App Certificate |
-| `OPENAI_MODEL` | | `gpt-4o-mini` | OpenAI model |
-| `OPENAI_API_KEY` | | — | Optional — Agora manages the OpenAI key by default (keyless). Set only if your account requires it. |
-| `MEMORY_DB_PATH` | | `memory.db` | Path to the SQLite file (relative to `server/`, or absolute). In Docker: `/tmp/memory.db`. |
-| `MEMORY_MAX_TURNS` | | `20` | Rolling cap on stored turns per user handle. |
-| `NIMBLE_API_KEY` | | — | Optional. Enables Nimble web search (`nimble_search` via MCP) for Maya. |
-| `AGENT_GREETING` | | built-in | Optional opening line override |
+- `web/` — Next.js 16 / React 19 app (:3000): call UI, transcript, voice orb.
+- `server/` — FastAPI backend (:8000): tokens, agent lifecycle, SQLite memory, Nimbleway MCP wiring (`server/src/agent.py`).
+- `extension/` — Manifest V3 Chrome popup on the same backend.
+- `docs/` — the GitHub Pages showcase.
 
 ## Commands
 
 ```bash
-bun run setup            # install web deps + create server/ venv
-bun run dev              # run backend (:8000) + web (:3000)
-
-bun run doctor           # prerequisite check (no creds needed)
-bun run doctor:local     # + .env.local + credentials checks
-
-bun run verify           # web-only gate (no Agora creds needed)
-bun run verify:local     # full local gate: backend compile + smoke tests + web build
-bun run clean            # remove venvs and build artifacts
+bun run dev            # backend + frontend
+bun run verify         # web checks + build
+bun run verify:local   # full local gate (needs credentials)
 ```
-
-Tests run standalone (no Agora cloud needed): `pytest` in `server/`, plus
-`bun run verify` in `web/`. CI runs them on Linux/macOS/Windows × Python 3.10 & 3.13.
-
-## Architecture
-
-```
-Browser (localhost:3000)
-  │  fetch /api/*
-  ▼
-Next.js  ──rewrite──▶  Agent backend  (server/, localhost:8000)
-                          │  loads SQLite memory for user handle
-                          │  starts agent session with memory-injected system_messages
-                          ▼
-                       Agora ConvoAI Cloud
-                          │  Deepgram STT (managed, nova-3, en)
-                          │  OpenAI (Agora-managed, keyless)
-                          │  MiniMax TTS (managed)
-                          ▼
-                       User hears warm, context-aware responses
-
-On stop:  session.get_history() ──▶  SQLite (memory.db)
-          (captured BEFORE session.stop())
-```
-
-No separate `llm/` service — OpenAI is Agora-managed and requires no API key.
-See [ARCHITECTURE.md](./ARCHITECTURE.md).
-
-## What You Get
-
-- **Cross-session memory**: the user enters a name handle before the call; prior conversation turns are loaded from SQLite and re-injected via `llm.system_messages` so the agent greets them by name and recalls earlier topics.
-- A **Next.js** web client (:3000) that drives the RTC/RTM lifecycle and only ever calls `/api/*`.
-- A **FastAPI** agent backend (:8000) that owns Agora token generation, agent session lifecycle, and the SQLite memory store.
-- The `/api/get_config` · `/api/startAgent` · `/api/stopAgent` contract between the web client and the backend (Next rewrites, no Route Handlers).
-- **Managed keyless OpenAI** — Agora-managed, no `OPENAI_API_KEY` required.
-- **Zero-key** setup — the full pipeline runs with no LLM API key by default.
-
-## How It Works
-
-1. The browser calls `/api/get_config`; the backend mints an Agora token from
-   `AGORA_APP_ID` + `AGORA_APP_CERTIFICATE`.
-2. The user enters an optional name handle. The browser calls `/api/startAgent`
-   with `userKey` in the body.
-3. The backend calls `get_history(handle)` on the SQLite store, loads any prior
-   turns for that handle, and builds `system_messages = [base_system_prompt, memory_context]`.
-4. The agent session starts with those system messages; the model greets the
-   user using recalled context.
-5. The user speaks; Agora runs STT → OpenAI → MiniMax TTS → audio back to the user.
-6. `/api/stopAgent` is called (end-call button). The server calls
-   `await session.get_history()` **before** `session.stop()` — the only window
-   where history is available — then persists the turns to SQLite for that handle.
-
-**Limitation:** if the session times out due to idle silence (30 s), the SDK
-stop path bypasses the history-capture block. End the call via the button to
-ensure memory is saved.
-
-## Repo Map
-
-- `web/` — Next.js frontend (:3000); RTC/RTM lifecycle and UI.
-- `server/` — FastAPI agent backend (:8000); Agora tokens, agent lifecycle, SQLite memory.
-- `extension/` — Chrome toolbar popup for talking to Maya (uses the same backend); see `extension/README.md`.
-- `ARCHITECTURE.md` — system shape and component boundaries.
-- `AGENTS.md` — guide for coding agents working in this repo.
-
-## Troubleshooting
-
-| Problem | Fix |
-| --- | --- |
-| Agent does not recall previous conversation | Make sure you used the same name handle in both sessions and ended the first call via the end-call button (not by closing the tab). |
-| `memory.db` grows large | Reduce `MEMORY_MAX_TURNS` or delete the file to reset all memory. |
-| Local calls fail under a global proxy (Clash, etc.) | Configure your proxy to send `127.0.0.1`, `localhost`, and RFC-1918 ranges DIRECT. |
-
-## More Docs
-
-- [ARCHITECTURE.md](./ARCHITECTURE.md)
-- [AGENTS.md](./AGENTS.md)
 
 ## License
 
-Released under the [MIT License](./LICENSE).
+MIT — see [LICENSE](LICENSE). Based on an MIT-licensed open-source voice agent recipe.

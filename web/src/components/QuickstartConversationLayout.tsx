@@ -27,8 +27,8 @@ export function QuickstartConversationLayout({
 			<header className="flex shrink-0 flex-col gap-4 border-b border-border px-4 py-4 md:h-[76px] md:flex-row md:items-center md:justify-between md:px-6 md:py-0">
 				<div className="flex min-w-0 items-center gap-3">
 					<Image
-						src="/agora-logo-mark.svg"
-						alt="Agora"
+						src="/nimblebuddy-mark.svg"
+						alt="NimbleBuddy"
 						width={40}
 						height={40}
 						className="h-10 w-10 shrink-0 object-contain"

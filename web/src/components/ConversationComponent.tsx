@@ -408,7 +408,7 @@ export default function ConversationComponent({
 			await client?.renewToken(rtcToken);
 			await rtmClient.renewToken(rtmToken);
 		} catch (error) {
-			console.error("Failed to renew Agora token:", error);
+			console.error("Failed to renew RTC token:", error);
 		}
 	}, [client, onTokenWillExpire, joinedUID, rtmClient]);
 

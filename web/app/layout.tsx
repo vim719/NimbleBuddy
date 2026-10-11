@@ -15,7 +15,7 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-	title: "Meet Maya | Agora Conversational AI",
+	title: "Meet Maya | NimbleBuddy",
 	description:
 		"A real-time AI companion voice call that remembers you across conversations.",
 	icons: {

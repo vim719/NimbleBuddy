@@ -7,7 +7,6 @@ import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 import { LoadingSkeleton } from '@/components/LoadingSkeleton'
 import { QuickstartPreCallCard } from '@/components/QuickstartPreCallCard'
-import { ShareButton } from '@/components/share-button'
 import { getConfig, startAgent, stopAgent } from '@/services/api'
 import type { AgoraRenewalTokens, AgoraTokenData } from '@/types/conversation'
 
@@ -63,7 +62,7 @@ const AgoraProvider = dynamic(
 
         // Browsers block remote audio that starts after the click gesture has
         // expired. The SDK resumes playback on the next user interaction, so
-        // prompt for one (see Agora "Browser autoplay" docs).
+        // prompt for one (see the RTC SDK "Browser autoplay" docs).
         const [autoplayBlocked, setAutoplayBlocked] = useState(false)
         useEffect(() => {
           AgoraRTC.onAutoplayFailed = () => setAutoplayBlocked(true)
@@ -256,10 +255,12 @@ export default function LandingPage() {
           showConversation ? 'justify-end' : 'justify-between'
         }`}
       >
-        {!showConversation ? <ShareButton menuPlacement="top" /> : null}
+        {!showConversation ? (
+          <span className="text-xs text-muted-foreground">Built with Claude · Gemini · Antigravity</span>
+        ) : null}
         <div className="flex items-center justify-end gap-2 text-muted-foreground">
           <span className="text-xs font-medium uppercase tracking-wide">Powered by</span>
-          <span className="text-lg font-semibold tracking-tight text-primary">Nimble</span>
+          <span className="text-lg font-semibold tracking-tight text-primary">Nimbleway</span>
         </div>
       </footer>
     </div>

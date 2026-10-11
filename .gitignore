@@ -18,7 +18,7 @@ extension/dist/
 !.env.example
 !.env.local.example
 
-# Agora CLI local project binding
+# CLI local project binding
 .agora/
 
 # IDE
@@ -37,3 +37,11 @@ Thumbs.db
 
 # AI/process docs (never publish)
 docs/superpowers/
+
+# Internal dev notes (kept locally, not published)
+AGENTS.md
+CLAUDE.md
+ARCHITECTURE.md
+server/README.md
+web/.claude/
+web/docs/

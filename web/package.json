@@ -1,5 +1,5 @@
 {
-  "name": "agora-conversational-ai-demo",
+  "name": "nimblebuddy-web",
   "version": "1.0.0",
   "scripts": {
     "doctor": "bun run scripts/doctor.ts",

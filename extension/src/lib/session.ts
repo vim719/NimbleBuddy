@@ -41,7 +41,7 @@ const INITIAL: SessionSnapshot = {
 }
 
 // Same lifecycle as web/: get token → start agent + RTM login → join RTC →
-// publish mic → subscribe transcripts. Adapted from the Agora Chrome Plugin recipe.
+// publish mic → subscribe transcripts.
 class MayaSession {
   private snapshot: SessionSnapshot = INITIAL
   private listeners = new Set<Listener>()
@@ -143,7 +143,7 @@ class MayaSession {
       await this.rtc?.renewToken(fresh.token)
       await this.rtm?.renewToken(fresh.token)
     } catch (error) {
-      console.error('Failed to renew Agora token:', error)
+      console.error('Failed to renew RTC token:', error)
     }
   }
 
