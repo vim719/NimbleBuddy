@@ -35,7 +35,7 @@ export function QuickstartConversationLayout({
 					/>
 					<div className="flex min-w-0 flex-col justify-center gap-1">
 						<span className="truncate text-lg font-semibold leading-none tracking-[-0.025em] text-foreground">
-							Maya
+							Anna
 						</span>
 						{pipelineMetrics}
 					</div>
@@ -48,7 +48,7 @@ export function QuickstartConversationLayout({
 						size="sm"
 						className="h-8 rounded-md border border-destructive bg-transparent px-3 text-xs font-medium text-destructive hover:bg-destructive/10"
 						onClick={onEndConversation}
-						aria-label="End conversation with Maya"
+						aria-label="End conversation with Anna"
 						title="End conversation"
 					>
 						End Conversation

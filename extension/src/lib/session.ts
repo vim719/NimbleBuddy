@@ -14,7 +14,7 @@ export type SessionStatus = 'idle' | 'starting' | 'live' | 'ending' | 'error'
 
 export interface TranscriptLine {
   id: string
-  speaker: 'Maya' | 'You'
+  speaker: 'Anna' | 'You'
   text: string
 }
 
@@ -42,7 +42,7 @@ const INITIAL: SessionSnapshot = {
 
 // Same lifecycle as web/: get token → start agent + RTM login → join RTC →
 // publish mic → subscribe transcripts.
-class MayaSession {
+class AnnaSession {
   private snapshot: SessionSnapshot = INITIAL
   private listeners = new Set<Listener>()
   private config: SessionConfig | null = null
@@ -75,7 +75,7 @@ class MayaSession {
       this.mic = await AgoraRTC.createMicrophoneAudioTrack()
     } catch (error) {
       console.error('Microphone unavailable:', error)
-      this.update({ status: 'error', micBlocked: true, error: 'Maya needs your microphone.' })
+      this.update({ status: 'error', micBlocked: true, error: 'Anna needs your microphone.' })
       return
     }
 
@@ -131,7 +131,7 @@ class MayaSession {
       .filter((item) => item.text?.trim())
       .map((item) => ({
         id: `${item.uid}-${item.turn_id}`,
-        speaker: String(item.uid) === agentUid ? 'Maya' : 'You',
+        speaker: String(item.uid) === agentUid ? 'Anna' : 'You',
         text: item.text.trim(),
       }))
   }
@@ -198,4 +198,4 @@ class MayaSession {
   }
 }
 
-export const session = new MayaSession()
+export const session = new AnnaSession()

@@ -352,7 +352,7 @@ export default function ConversationComponent({
   const handleMicToggle = useCallback(() => setMicEnabled(!isEnabled), [isEnabled, setMicEnabled])
 
   // Keyboard push-to-talk: "A" starts listening, "X" stops all input until "A"
-  // is pressed again — so background voices can't interrupt Maya.
+  // is pressed again — so background voices can't interrupt Anna.
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return
@@ -421,7 +421,7 @@ export default function ConversationComponent({
       visualizer={
         <section
           className="relative flex h-full min-h-[20rem] w-full max-w-4xl items-center justify-center"
-          aria-label="Maya status visualization"
+          aria-label="Anna status visualization"
         >
           <AgentVisualizer state={visualizerState} size="lg" />
           {remoteUsers.map((user) => (

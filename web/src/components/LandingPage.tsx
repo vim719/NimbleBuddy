@@ -2,6 +2,7 @@
 
 import type { RTMClient } from 'agora-rtm'
 import dynamic from 'next/dynamic'
+import Link from 'next/link'
 import { Suspense, useCallback, useEffect, useRef, useState } from 'react'
 
 import { ErrorBoundary } from '@/components/ErrorBoundary'
@@ -61,9 +62,17 @@ const AgoraProvider = dynamic(
         }
 
         // Browsers block remote audio that starts after the click gesture has
-        // expired. The SDK resumes playback on the next user interaction, so
-        // prompt for one (see the RTC SDK "Browser autoplay" docs).
+        // expired. Play() must run inside a user gesture (Safari is strict), so
+        // resume on the overlay button or on any click/key press anywhere.
         const [autoplayBlocked, setAutoplayBlocked] = useState(false)
+        const resumeAudio = useCallback(() => {
+          for (const user of clientRef.current?.remoteUsers ?? []) {
+            if (user.audioTrack?.isPlaying) user.audioTrack.stop()
+            user.audioTrack?.play()
+          }
+          setAutoplayBlocked(false)
+        }, [])
+
         useEffect(() => {
           AgoraRTC.onAutoplayFailed = () => setAutoplayBlocked(true)
           return () => {
@@ -71,24 +80,33 @@ const AgoraProvider = dynamic(
           }
         }, [])
 
+        useEffect(() => {
+          if (!autoplayBlocked) return
+          window.addEventListener('pointerdown', resumeAudio)
+          window.addEventListener('keydown', resumeAudio)
+          return () => {
+            window.removeEventListener('pointerdown', resumeAudio)
+            window.removeEventListener('keydown', resumeAudio)
+          }
+        }, [autoplayBlocked, resumeAudio])
+
         return (
           <AgoraRTCProvider client={clientRef.current}>
             {children}
             {autoplayBlocked ? (
-              <button
-                type="button"
-                onClick={() => {
-                  // Safari only allows play() called directly inside the gesture.
-                  for (const user of clientRef.current?.remoteUsers ?? []) {
-                    if (user.audioTrack?.isPlaying) user.audioTrack.stop()
-                    user.audioTrack?.play()
-                  }
-                  setAutoplayBlocked(false)
-                }}
-                className="fixed inset-x-0 bottom-6 z-50 mx-auto w-fit rounded-full border border-primary bg-primary px-5 py-2.5 text-sm font-semibold text-white shadow-lg hover:border-accent hover:bg-accent"
-              >
-                Tap to hear Maya
-              </button>
+              <div className="fixed inset-0 z-[60] flex items-center justify-center bg-white/70 backdrop-blur-sm">
+                <button
+                  type="button"
+                  onClick={resumeAudio}
+                  className="flex flex-col items-center gap-3 rounded-3xl border border-border bg-card px-10 py-8 shadow-[0_24px_60px_rgba(20,22,31,0.16)] transition-transform hover:-translate-y-1"
+                >
+                  <span className="flex h-16 w-16 items-center justify-center rounded-full bg-primary text-3xl text-white shadow-[0_10px_24px_rgba(25,130,196,0.35)]">
+                    🔊
+                  </span>
+                  <span className="text-xl font-bold italic tracking-tight">Tap to hear Anna</span>
+                  <span className="text-sm text-muted-foreground">Your browser paused her voice until you tap.</span>
+                </button>
+              </div>
             ) : null}
           </AgoraRTCProvider>
         )
@@ -228,6 +246,7 @@ export default function LandingPage() {
           }`}
         >
           {!showConversation ? (
+            <>
             <QuickstartPreCallCard
               isLoading={isLoading}
               error={error}
@@ -235,6 +254,19 @@ export default function LandingPage() {
               onUserKeyChange={setUserKey}
               onStartConversation={handleStartConversation}
             />
+              <Link
+                href="/market"
+                className="group mt-5 inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2 text-sm font-medium shadow-sm transition-all hover:-translate-y-0.5 hover:border-primary hover:text-primary"
+              >
+                <span className="flex gap-0.5" aria-hidden="true">
+                  <i className="h-3 w-1 rounded-full bg-[var(--c-green)]" />
+                  <i className="mt-1 h-2 w-1 rounded-full bg-[var(--c-red)]" />
+                  <i className="h-3 w-1 rounded-full bg-[var(--c-blue)]" />
+                </span>
+                Market Pulse — cited stock &amp; crypto outlooks
+                <span className="transition-transform group-hover:translate-x-0.5">→</span>
+              </Link>
+            </>
           ) : agoraData && rtmClient ? (
             <>
               {agentJoinError ? (

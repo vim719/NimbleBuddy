@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 
 import { session, type SessionSnapshot } from '../lib/session'
 
-const NAME_KEY = 'maya:userKey'
+const NAME_KEY = 'anna:userKey'
 
 function readName(): string {
   try {
@@ -17,9 +17,9 @@ function stateLabel(snapshot: SessionSnapshot): string {
   if (snapshot.status === 'ending') return 'Saving our chat…'
   switch (snapshot.agentState) {
     case 'speaking':
-      return 'Maya is talking'
+      return 'Anna is talking'
     case 'thinking':
-      return 'Maya is thinking'
+      return 'Anna is thinking'
     case 'listening':
       return 'Listening'
     default:
@@ -79,7 +79,7 @@ export function App() {
       <header className="header">
         <img src="icon-192.png" alt="" className="avatar" />
         <div>
-          <h1>Maya</h1>
+          <h1>Anna</h1>
           <p className="subtitle">{inCall ? stateLabel(snapshot) : 'Your AI companion'}</p>
         </div>
       </header>
@@ -91,7 +91,7 @@ export function App() {
             id="name"
             value={name}
             onChange={(event) => setName(event.target.value)}
-            placeholder="So Maya remembers you"
+            placeholder="So Anna remembers you"
             onKeyDown={(event) => event.key === 'Enter' && start()}
           />
           <button type="button" className="primary" onClick={start}>
@@ -109,10 +109,10 @@ export function App() {
           <div className={`orb orb-${snapshot.agentState ?? 'idle'}`} aria-hidden="true" />
           <div className="transcript" ref={scrollRef}>
             {snapshot.transcript.length === 0 ? (
-              <p className="empty">Start speaking — Maya can hear you.</p>
+              <p className="empty">Start speaking — Anna can hear you.</p>
             ) : (
               snapshot.transcript.slice(-20).map((line) => (
-                <p key={line.id} className={line.speaker === 'Maya' ? 'line maya' : 'line you'}>
+                <p key={line.id} className={line.speaker === 'Anna' ? 'line anna' : 'line you'}>
                   <span>{line.speaker}</span>
                   {line.text}
                 </p>
@@ -121,7 +121,7 @@ export function App() {
           </div>
           {snapshot.autoplayBlocked ? (
             <button type="button" className="primary" onClick={() => session.resumeAudio()}>
-              Tap to hear Maya
+              Tap to hear Anna
             </button>
           ) : null}
           <p className="hint">

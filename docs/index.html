@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>NimbleBuddy — Meet Maya</title>
-<meta name="description" content="NimbleBuddy: Maya, a real-time voice AI companion that remembers you and searches the live web. Powered by Nimbleway web search; built with Claude, Gemini and Antigravity." />
-<meta property="og:title" content="NimbleBuddy — Meet Maya" />
+<title>NimbleBuddy — Meet Anna</title>
+<meta name="description" content="NimbleBuddy: Anna, a real-time voice AI companion that remembers you and searches the live web. Powered by Nimbleway web search; built with Claude, Gemini and Antigravity." />
+<meta property="og:title" content="NimbleBuddy — Meet Anna" />
 <meta property="og:description" content="A real-time voice AI companion that remembers you and searches the live web." />
 <meta property="og:image" content="assets/web-call.jpg" />
 <link rel="icon" href="assets/icon.png" />
@@ -90,7 +90,7 @@
   h1 {
     margin: 22px auto 18px; max-width: 900px;
     font-size: clamp(42px, 7.2vw, 82px); line-height: 1.04; letter-spacing: -0.035em;
-    font-weight: 700; font-style: italic;
+    font-weight: 700;
   }
   /* hover letters */
   .letters .w { display: inline-block; white-space: nowrap; }
@@ -104,7 +104,17 @@
   .letters .l.c2:hover, .letters .l.c2.pop { color: var(--green); }
   .letters .l.c3:hover, .letters .l.c3.pop { color: var(--blue); }
   .letters .l.c4:hover, .letters .l.c4.pop { color: var(--violet); }
-  .maya {
+  /* automatic colour wave: each letter runs through the palette, then rests black */
+  .letters.wave .l { animation: letter-wave 1.8s ease-in-out both; animation-delay: calc(var(--i) * 70ms); }
+  @keyframes letter-wave {
+    0%, 100% { color: var(--text); transform: none; }
+    16% { color: var(--red); transform: translateY(-4px); }
+    33% { color: var(--yellow); }
+    50% { color: var(--green); transform: translateY(-2px); }
+    66% { color: var(--blue); }
+    83% { color: var(--violet); }
+  }
+  .anna {
     background: linear-gradient(100deg, var(--red), var(--yellow) 30%, var(--green) 50%, var(--blue) 72%, var(--violet));
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
@@ -275,8 +285,8 @@
   <div class="bars" aria-hidden="true"><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i><i class="bar"></i></div>
   <div class="wrap">
     <div class="eyebrow-top">Real-time voice · Memory · Live web search</div>
-    <h1 aria-label="Meet Maya, the voice buddy who remembers you."><span class="letters" aria-hidden="true">Meet </span><span class="maya">Maya</span><span class="letters" aria-hidden="true">, the voice buddy who remembers you.</span></h1>
-    <p class="lede">NimbleBuddy is a voice-first AI companion. Talk to Maya out loud — she answers in under a second, picks up where your last call left off, and looks things up on the live web with Nimbleway.</p>
+    <h1 aria-label="Meet Anna, the voice buddy who remembers you."><span class="letters" aria-hidden="true">Meet </span><span class="anna">Anna</span><span class="letters" aria-hidden="true">, the voice buddy who remembers you.</span></h1>
+    <p class="lede">NimbleBuddy is a voice-first AI companion. Talk to Anna out loud — she answers in under a second, picks up where your last call left off, and looks things up on the live web with Nimbleway.</p>
     <div class="cta">
       <a class="btn btn-primary" href="https://github.com/vim719/NimbleBuddy">View the code →</a>
       <a class="btn btn-ghost" href="assets/nimblebuddy-extension.zip" download>Download Chrome extension</a>
@@ -286,7 +296,7 @@
       <div class="ring"></div><div class="ring"></div><div class="ring"></div>
       <div class="orb"></div>
       <div class="bubble b1"><b>You:</b> What's the weather in NYC?</div>
-      <div class="bubble b2"><b>Maya:</b> Let me look that up…</div>
+      <div class="bubble b2"><b>Anna:</b> Let me look that up…</div>
     </div>
   </div>
 </header>
@@ -305,17 +315,17 @@
       <div class="card">
         <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9"/><path d="M12 7v5l3 2"/><path d="M17 3h4v4"/></svg></div>
         <h3>Cross-session memory</h3>
-        <p>Tell Maya your name and she remembers what you talked about last time — stored per user and re-injected on your next call.</p>
+        <p>Tell Anna your name and she remembers what you talked about last time — stored per user and re-injected on your next call.</p>
       </div>
       <div class="card">
         <div class="icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
         <h3>Live web search</h3>
-        <p>Ask about news, weather or anything recent. Maya calls Nimbleway's <code>nimble_search</code> tool over MCP and answers in a sentence or two.</p>
+        <p>Ask about news, weather or anything recent. Anna calls Nimbleway's <code>nimble_search</code> tool over MCP and answers in a sentence or two.</p>
       </div>
       <div class="card">
         <div class="icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 4v5"/></svg></div>
         <h3>Chrome extension</h3>
-        <p>Talk to Maya from the toolbar without opening a tab — a Manifest V3 popup on the same backend, memory and search.</p>
+        <p>Talk to Anna from the toolbar without opening a tab — a Manifest V3 popup on the same backend, memory and search.</p>
       </div>
     </div>
   </div>
@@ -329,17 +339,17 @@
     <div class="gallery">
       <div class="stack">
         <figure class="shot">
-          <img src="assets/web-call.jpg" alt="Maya call screen with live transcript and voice orb" loading="lazy" />
+          <img src="assets/web-call.jpg" alt="Anna call screen with live transcript and voice orb" loading="lazy" />
           <figcaption>Live call — transcript, voice orb, and push-to-talk: press A to talk, X to stop listening.</figcaption>
         </figure>
         <figure class="shot">
-          <img src="assets/web-start.jpg" alt="Meet Maya start screen with name field" loading="lazy" />
-          <figcaption>Enter a name so Maya remembers you next time.</figcaption>
+          <img src="assets/web-start.jpg" alt="Meet Anna start screen with name field" loading="lazy" />
+          <figcaption>Enter a name so Anna remembers you next time.</figcaption>
         </figure>
       </div>
       <figure class="shot popup">
         <img src="assets/extension-popup.jpg" alt="NimbleBuddy Chrome extension popup" loading="lazy" />
-        <figcaption>Chrome extension popup — talk to Maya from any tab.</figcaption>
+        <figcaption>Chrome extension popup — talk to Anna from any tab.</figcaption>
       </figure>
     </div>
   </div>
@@ -352,7 +362,7 @@
     <div class="flow">
       <div class="step"><b>You speak</b><span>Mic audio streams over a real-time channel.</span></div>
       <div class="step"><b>Transcribed</b><span>Deepgram nova-3 turns speech into text.</span></div>
-      <div class="step"><b>Maya thinks</b><span>OpenAI with your memory in context.</span></div>
+      <div class="step"><b>Anna thinks</b><span>OpenAI with your memory in context.</span></div>
       <div class="step"><b>Searches</b><span>Nimbleway MCP when she needs fresh facts.</span></div>
       <div class="step"><b>Replies</b><span>MiniMax TTS speaks back in real time.</span></div>
     </div>
@@ -424,7 +434,7 @@
       <div class="card">
         <div class="icon"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></div>
         <h3>Nimbleway</h3>
-        <p>Live web search inside the product. Maya calls Nimbleway's MCP server whenever she needs fresh facts.</p>
+        <p>Live web search inside the product. Anna calls Nimbleway's MCP server whenever she needs fresh facts.</p>
       </div>
       <div class="card">
         <div class="icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6 5.6 18.4"/></svg></div>
@@ -448,7 +458,7 @@
 <section id="run" class="soft">
   <div class="wrap reveal">
     <div class="eyebrow">Run it</div>
-    <h2>Try Maya on your machine.</h2>
+    <h2>Try Anna on your machine.</h2>
     <p class="sub">You'll need real-time voice credentials (App ID + Certificate), and a Nimbleway API key for web search.</p>
     <div class="run">
       <div class="card">
@@ -470,7 +480,7 @@ bun install &amp;&amp; bun run build
 <span class="c"># → Load unpacked → extension/dist</span></pre>
       </div>
     </div>
-    <p class="note"><b>Why no live demo link?</b> Maya's backend holds the voice App Certificate and API keys, so it runs server-side rather than on GitHub Pages. Clone and run locally in about two minutes.</p>
+    <p class="note"><b>Why no live demo link?</b> Anna's backend holds the voice App Certificate and API keys, so it runs server-side rather than on GitHub Pages. Clone and run locally in about two minutes.</p>
   </div>
 </section>
 
@@ -493,13 +503,30 @@ bun install &amp;&amp; bun run build
       word.className = 'w';
       for (const ch of part) {
         const l = document.createElement('span');
-        l.className = 'l c' + (n++ % 5);
+        l.className = 'l c' + (n % 5);
+        l.style.setProperty('--i', n++);
         l.textContent = ch;
         word.appendChild(l);
       }
       el.appendChild(word);
     });
   });
+  // Automatic wave: letters change colour one after another, then the headline
+  // rests in black for 19 seconds before the next round.
+  const REST_MS = 19000;
+  const lettersEls = document.querySelectorAll('.letters');
+  if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches && n > 0) {
+    const roundMs = n * 70 + 1800;
+    const wave = () => {
+      lettersEls.forEach((el) => { el.classList.remove('wave'); void el.offsetWidth; el.classList.add('wave'); });
+      setTimeout(() => {
+        lettersEls.forEach((el) => el.classList.remove('wave'));
+        setTimeout(wave, REST_MS);
+      }, roundMs);
+    };
+    setTimeout(wave, 1200);
+  }
+
   // On touch screens, tap the headline to flash the colours.
   document.querySelector('h1')?.addEventListener('touchstart', () => {
     document.querySelectorAll('.letters .l').forEach((l, i) => {

@@ -21,9 +21,11 @@ load_dotenv(os.path.join(_base_dir, '.env'), override=True)
 
 from fastapi import APIRouter, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
 from agora_agent.agentkit.token import generate_convo_ai_token
 from agent import Agent
+import market
 
 logger = logging.getLogger("uvicorn.error")
 
@@ -189,6 +191,62 @@ async def stop_agent(request: StopAgentRequest):
     except Exception as e:
         _log_route_error("/stopAgent", e, agentId=request.agentId)
         raise _to_http_error(e)
+
+
+# --- Market Pulse: structured stock/crypto sentiment outlooks via Nimbleway ---
+
+class MarketOutlookRequest(BaseModel):
+    """Request body for POST /market/outlook"""
+    symbol: str
+    assetType: str = "crypto"
+
+
+@router.post("/market/outlook")
+async def market_outlook(request: MarketOutlookRequest):
+    """Start a Nimbleway research run; poll /market/jobs/{jobId} for the result."""
+    api_key = os.getenv("NIMBLE_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=400, detail="NIMBLE_API_KEY is not set in server/.env.local.")
+    symbol = request.symbol.strip().upper()
+    if not symbol or len(symbol) > 20 or not symbol.replace("-", "").replace(".", "").isalnum():
+        raise HTTPException(status_code=400, detail="Enter a ticker like AAPL or BTC.")
+    asset_type = "stock" if request.assetType.lower() == "stock" else "crypto"
+    job_id = market.start_job(symbol, asset_type, api_key)
+    return {"code": 0, "msg": "success", "data": {"jobId": job_id}}
+
+
+@router.get("/market/jobs/{job_id}")
+async def market_job(job_id: str):
+    job = market.get_job(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Unknown job.")
+    return {"code": 0, "msg": "success", "data": job}
+
+
+@router.get("/market/insights")
+async def market_insights():
+    return {"code": 0, "msg": "success", "data": market.list_insights()}
+
+
+@router.get("/market/insights/{insight_id}.csv")
+async def market_insight_csv(insight_id: str):
+    insight = market.get_insight(insight_id)
+    if not insight:
+        raise HTTPException(status_code=404, detail="Unknown insight.")
+    filename = f"{insight['symbol']}-outlook-{insight_id}.csv"
+    return PlainTextResponse(
+        market.to_csv(insight),
+        media_type="text/csv",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )
+
+
+@router.get("/market/insights/{insight_id}")
+async def market_insight(insight_id: str):
+    insight = market.get_insight(insight_id)
+    if not insight:
+        raise HTTPException(status_code=404, detail="Unknown insight.")
+    return {"code": 0, "msg": "success", "data": insight}
 
 
 app.include_router(router)

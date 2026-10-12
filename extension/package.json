@@ -1,8 +1,8 @@
 {
-  "name": "maya-chrome-extension",
+  "name": "anna-chrome-extension",
   "version": "0.1.0",
   "private": true,
-  "description": "Chrome toolbar popup for talking to Maya.",
+  "description": "Chrome toolbar popup for talking to Anna.",
   "type": "module",
   "scripts": {
     "build": "vite build",

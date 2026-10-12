@@ -255,3 +255,35 @@ body {
 	.palette-bars i,
 	.hover-letters .hl { animation: none; transition: none; }
 }
+
+/* Automatic colour wave for HoverLetters: each letter runs through the palette,
+   then the headline rests in its normal colour (see HoverLetters.tsx). */
+.hover-letters.wave .hl {
+	animation: letter-wave 1.8s ease-in-out both;
+	animation-delay: calc(var(--i) * 70ms);
+}
+
+@keyframes letter-wave {
+	0%,
+	100% {
+		color: inherit;
+		transform: none;
+	}
+	16% {
+		color: var(--c-red);
+		transform: translateY(-4px);
+	}
+	33% {
+		color: var(--c-yellow);
+	}
+	50% {
+		color: var(--c-green);
+		transform: translateY(-2px);
+	}
+	66% {
+		color: var(--c-blue);
+	}
+	83% {
+		color: var(--c-violet);
+	}
+}

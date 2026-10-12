@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "maya-chrome-extension",
+      "name": "anna-chrome-extension",
       "dependencies": {
         "agora-agent-client-toolkit": "2.9.0",
         "agora-rtc-sdk-ng": "4.24.4",

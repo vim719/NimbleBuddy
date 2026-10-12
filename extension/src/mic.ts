@@ -10,7 +10,7 @@ async function requestMic() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
     for (const track of stream.getTracks()) track.stop()
-    status.textContent = 'Microphone allowed. Close this tab and click the Maya icon again.'
+    status.textContent = 'Microphone allowed. Close this tab and click the Anna icon again.'
     status.className = 'ok'
   } catch {
     status.textContent =

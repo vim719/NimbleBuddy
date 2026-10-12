@@ -17,7 +17,7 @@ async function call<T>(path: string, init?: RequestInit): Promise<T> {
   try {
     response = await fetch(`${API_BASE_URL}${path}`, init)
   } catch {
-    throw new Error(`Can't reach the Maya backend at ${API_BASE_URL}. Is "npm run dev" running?`)
+    throw new Error(`Can't reach the Anna backend at ${API_BASE_URL}. Is "npm run dev" running?`)
   }
   const body = (await response.json().catch(() => ({}))) as Envelope<T> & { detail?: string }
   if (!response.ok || body.code !== 0 || body.data === undefined) {

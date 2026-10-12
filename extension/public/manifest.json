@@ -1,10 +1,10 @@
 {
   "manifest_version": 3,
-  "name": "Maya",
-  "description": "Talk to Maya, your AI companion, from the Chrome toolbar.",
+  "name": "Anna",
+  "description": "Talk to Anna, your AI companion, from the Chrome toolbar.",
   "version": "0.1.0",
   "action": {
-    "default_title": "Talk to Maya",
+    "default_title": "Talk to Anna",
     "default_popup": "index.html",
     "default_icon": {
       "192": "icon-192.png"
